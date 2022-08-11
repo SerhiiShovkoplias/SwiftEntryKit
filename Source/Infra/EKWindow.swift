@@ -27,7 +27,13 @@ class EKWindow: UIWindow {
         rootViewController = rootVC
         accessibilityViewIsModal = true
         if #available(iOS 13.0, *) {
-            overrideUserInterfaceStyle = UIApplication.shared.keyWindow?.overrideUserInterfaceStyle == .dark ? .dark : .light
+            switch UIApplication.shared.keyWindow?.overrideUserInterfaceStyle {
+            case .dark, .light:
+                overrideUserInterfaceStyle = UIApplication.shared.keyWindow?.overrideUserInterfaceStyle == .dark ? .dark : .light
+            default:
+                overrideUserInterfaceStyle = UIScreen.main.traitCollection.userInterfaceStyle
+            }
+            
         }
     }
     
