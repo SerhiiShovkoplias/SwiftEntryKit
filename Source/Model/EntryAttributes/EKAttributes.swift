@@ -48,7 +48,7 @@ public struct EKAttributes {
 
     /** Describes the scrolling behaviour of the entry.
      The entry can be swiped out and in with an ability to spring back with a jolt */
-    public var scroll = Scroll.enabled(swipeable: true, pullbackAnimation: .jolt)
+    public var scroll = Scroll.enabled(swipeable: true, disableStretch: false, pullbackAnimation: .jolt)
     
     /** Generate haptic feedback once the entry is displayed */
     public var hapticFeedbackType = NotificationHapticFeedback.none

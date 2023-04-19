@@ -647,7 +647,9 @@ extension EKContentView {
     private func swipeEnded(withVelocity velocity: CGFloat) {
         let distance = Swift.abs(inOffset - inConstraint.constant)
         var duration = max(0.3, TimeInterval(distance / Swift.abs(velocity)))
+        
         duration = min(0.7, duration)
+        duration = max(CATransaction.animationDuration(), duration)
         
         if attributes.scroll.isSwipeable && testSwipeVelocity(with: velocity) && testSwipeInConstraint() {
             stretchOut(usingSwipe: velocity > 0 ? .swipeDown : .swipeUp, duration: duration)
@@ -660,7 +662,7 @@ extension EKContentView {
         outDispatchWorkItem?.cancel()
         entryDelegate?.changeToInactive(withAttributes: attributes, pushOut: false)
         contentView.content.attributes.lifecycleEvents.willDisappear?()
-        UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: [.allowUserInteraction, .beginFromCurrentState], animations: {
+        UIView.animate(withDuration: duration, delay: 0.0, options: [.allowUserInteraction, .beginFromCurrentState], animations: {
             self.translateOut(withType: type)
         }, completion: { finished in
             self.removeFromSuperview(keepWindow: false)
@@ -679,10 +681,14 @@ extension EKContentView {
     }
     
     private func shouldStretch(with translation: CGFloat) -> Bool {
-        if attributes.position.isTop {
-            return translation > 0 && inConstraint.constant >= inOffset
+        if attributes.scroll.isStretch {
+            if attributes.position.isTop {
+                return translation > 0 && inConstraint.constant >= inOffset
+            } else {
+                return translation < 0 && inConstraint.constant <= inOffset
+            }
         } else {
-            return translation < 0 && inConstraint.constant <= inOffset
+            return false
         }
     }
     
@@ -690,7 +696,7 @@ extension EKContentView {
         totalTranslation = verticalLimit
     
         let animation: EKAttributes.Scroll.PullbackAnimation
-        if case .enabled(swipeable: _, pullbackAnimation: let pullbackAnimation) = attributes.scroll {
+        if case .enabled(swipeable: _, disableStretch: _, pullbackAnimation: let pullbackAnimation) = attributes.scroll {
             animation = pullbackAnimation
         } else {
             animation = .easeOut
@@ -703,19 +709,11 @@ extension EKContentView {
     }
     
     private func testSwipeInConstraint() -> Bool {
-        if attributes.position.isTop {
-            return inConstraint.constant < inOffset
-        } else {
-            return inConstraint.constant > inOffset
-        }
+        return abs(inConstraint.constant) > inOffset
     }
     
     private func testSwipeVelocity(with velocity: CGFloat) -> Bool {
-        if attributes.position.isTop {
-            return velocity < -swipeMinVelocity
-        } else {
-            return velocity > swipeMinVelocity
-        }
+        return abs(velocity) > swipeMinVelocity
     }
     
     private func handleExitDelayIfNeeded(byPanState state: UIGestureRecognizer.State) {
