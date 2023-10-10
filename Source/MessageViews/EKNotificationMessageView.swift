@@ -16,6 +16,12 @@ final public class EKNotificationMessageView: EKSimpleMessageView {
     
     private let message: EKNotificationMessage
     
+    public var titleToImageOffset: CGFloat = 4 {
+        didSet {
+            layoutContent(with: message.insets)
+        }
+    }
+    
     // MARK: Setup
     public init(with message: EKNotificationMessage) {
         self.message = message
@@ -48,7 +54,7 @@ final public class EKNotificationMessageView: EKSimpleMessageView {
             thumbImageView.layoutToSuperview(.top, offset: insets.contentInsets.top)
             thumbImageView.layoutToSuperview(.bottom, relation: .lessThanOrEqual, offset: -insets.contentInsets.bottom)
             messageContentView.layout(.left, to: .right, of: thumbImageView, offset: 12)
-            messageContentView.layout(to: .top, of: thumbImageView, offset: 4)
+            messageContentView.layout(to: .top, of: thumbImageView, offset: titleToImageOffset)
         } else {
             messageContentView.layoutToSuperview(.left, offset: insets.contentInsets.left)
             messageContentView.layoutToSuperview(.top, offset: insets.contentInsets.top)
