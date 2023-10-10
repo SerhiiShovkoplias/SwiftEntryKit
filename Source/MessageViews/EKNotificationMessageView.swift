@@ -16,12 +16,6 @@ final public class EKNotificationMessageView: EKSimpleMessageView {
     
     private let message: EKNotificationMessage
     
-    public var titleToImageOffset: CGFloat = 4 {
-        didSet {
-            layoutContent(with: message.insets)
-        }
-    }
-    
     // MARK: Setup
     public init(with message: EKNotificationMessage) {
         self.message = message
@@ -33,7 +27,7 @@ final public class EKNotificationMessageView: EKSimpleMessageView {
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+        
     private func setupAuxLabel(with content: EKProperty.LabelContent?) {
         auxiliaryContent = content
         guard let content = content else {
@@ -54,7 +48,8 @@ final public class EKNotificationMessageView: EKSimpleMessageView {
             thumbImageView.layoutToSuperview(.top, offset: insets.contentInsets.top)
             thumbImageView.layoutToSuperview(.bottom, relation: .lessThanOrEqual, offset: -insets.contentInsets.bottom)
             messageContentView.layout(.left, to: .right, of: thumbImageView, offset: 12)
-            messageContentView.layout(to: .top, of: thumbImageView, offset: titleToImageOffset)
+            messageContentView.layout(to: .centerY, of: thumbImageView, priority: .defaultLow)
+            messageContentView.layout(to: .top, of: thumbImageView, relation: .greaterThanOrEqual)
         } else {
             messageContentView.layoutToSuperview(.left, offset: insets.contentInsets.left)
             messageContentView.layoutToSuperview(.top, offset: insets.contentInsets.top)
