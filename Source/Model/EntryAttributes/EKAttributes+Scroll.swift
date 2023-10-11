@@ -43,7 +43,7 @@ public extension EKAttributes {
         case edgeCrossingDisabled(swipeable: Bool)
         
         /** The scroll abiliby is enabled */
-        case enabled(swipeable: Bool, disableStretch: Bool, pullbackAnimation: PullbackAnimation)
+        case enabled(swipeable: Bool, pullbackAnimation: PullbackAnimation)
         
         var isEnabled: Bool {
             switch self {
@@ -56,17 +56,8 @@ public extension EKAttributes {
         
         var isSwipeable: Bool {
             switch self {
-            case .edgeCrossingDisabled(swipeable: let swipeable), .enabled(swipeable: let swipeable, disableStretch: _,  pullbackAnimation: _):
+            case .edgeCrossingDisabled(swipeable: let swipeable), .enabled(swipeable: let swipeable, pullbackAnimation: _):
                 return swipeable
-            default:
-                return false
-            }
-        }
-        
-        var isStretch: Bool {
-            switch self {
-            case .enabled(swipeable: _, disableStretch: let disableStretch,  pullbackAnimation: _):
-                return !disableStretch
             default:
                 return false
             }
