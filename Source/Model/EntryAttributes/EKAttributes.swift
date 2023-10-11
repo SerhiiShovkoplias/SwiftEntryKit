@@ -21,11 +21,21 @@ public struct EKAttributes {
     
     // MARK: Display Attributes
     
+    public var swipeDirection = SwipeDirection.top
+    
     /** Entry presentation window level */
     public var windowLevel = WindowLevel.statusBar
     
     /** The position of the entry inside the screen */
-    public var position = Position.top
+    public var position = Position.top {
+        didSet {
+            if position.isBottom {
+                swipeDirection = .bottom
+            } else {
+                swipeDirection = .top
+            }
+        }
+    }
 
     /** The display manner of the entry. */
     public var precedence = Precedence.override(priority: .normal, dropEnqueuedEntries: false)

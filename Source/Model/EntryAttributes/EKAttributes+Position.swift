@@ -9,6 +9,12 @@
 import Foundation
 
 public extension EKAttributes {
+    
+    enum SwipeDirection {
+        case top
+        
+        case bottom
+    }
 
     /** The position of the entry. */
     enum Position {

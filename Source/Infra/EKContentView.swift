@@ -674,12 +674,16 @@ extension EKContentView {
         } else {
             let offset = Swift.abs(offset) + verticalLimit
             let addition: CGFloat = abs(currentTranslation) < 2 ? 0 : 1
-            inConstraint.constant -= (addition + log10(offset / verticalLimit))
+            if attributes.swipeDirection == .top {
+                inConstraint.constant += (addition + log10(offset / verticalLimit))
+            } else {
+                inConstraint.constant -= (addition + log10(offset / verticalLimit))
+            }
         }
     }
     
     private func shouldStretch(with translation: CGFloat) -> Bool {
-        if attributes.position.isTop {
+        if attributes.swipeDirection == .top {
             return translation > 0 && inConstraint.constant >= inOffset
         } else {
             return translation < 0 && inConstraint.constant <= inOffset
@@ -703,7 +707,7 @@ extension EKContentView {
     }
     
     private func testSwipeInConstraint() -> Bool {
-        if attributes.position.isTop {
+        if attributes.swipeDirection == .top {
             return inConstraint.constant < inOffset
         } else {
             return inConstraint.constant > inOffset
@@ -711,7 +715,7 @@ extension EKContentView {
     }
     
     private func testSwipeVelocity(with velocity: CGFloat) -> Bool {
-        if attributes.position.isTop {
+        if attributes.swipeDirection == .top {
             return velocity < -swipeMinVelocity
         } else {
             return velocity > swipeMinVelocity
