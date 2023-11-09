@@ -59,6 +59,12 @@ extension EntryCachingHeuristic {
         }
     }
     
+    func removeEntries(contains name: String) {
+        while let index = (entries.firstIndex { $0.view.attributes.name?.contains(name) == true }) {
+            entries.remove(at: index)
+        }
+    }
+    
     func remove(entry: CachedEntry) {
         guard let index = (entries.firstIndex { $0.view == entry.view }) else {
             return

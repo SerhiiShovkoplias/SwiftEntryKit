@@ -18,6 +18,9 @@ public final class SwiftEntryKit {
         /** Describes specific entry / entries with name */
         case specific(entryName: String)
         
+        /** Describes specific entry / entries with name which contains string */
+        case specificContains(string: String)
+        
         /** Describes a group of entries with lower or equal display priority */
         case prioritizedLowerOrEqualTo(priority: EKAttributes.Precedence.Priority)
         

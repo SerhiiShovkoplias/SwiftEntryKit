@@ -201,6 +201,12 @@ final class EKWindowProvider: EntryPresenterDelegate {
             if entryView?.attributes.name == name {
                 rootVC.animateOutLastEntry(completionHandler: completion)
             }
+        case .specificContains(string: let namePart):
+            entryQueue.removeEntries(contains: namePart)
+            if entryView?.attributes.name?.contains(namePart) == true {
+                rootVC.animateOutLastEntry(completionHandler: completion)
+            }
+            
         case .prioritizedLowerOrEqualTo(priority: let priorityThreshold):
             entryQueue.removeEntries(withPriorityLowerOrEqualTo: priorityThreshold)
             if let currentPriority = entryView?.attributes.precedence.priority, currentPriority <= priorityThreshold {
