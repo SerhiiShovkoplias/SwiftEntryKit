@@ -292,7 +292,7 @@ class EKContentView: UIView {
     private func setupTapGestureRecognizer() {
         switch attributes.entryInteraction.defaultAction {
         case .forward:
-            return
+            isUserInteractionEnabled = false
         default:
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureRecognized))
             tapGestureRecognizer.numberOfTapsRequired = 1
